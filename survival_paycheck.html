@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Surviving the Paycheck</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:,">
+</head>
+
+<body id="theme-background">
+
+  <!-- Ambient Audio -->
+  <audio id="ambient-audio" src="rain.mp3" loop autoplay></audio>
+
+  <!-- Notification Banner -->
+  <div id="notification-banner"></div>
+
+  <!-- Character Creation -->
+  <div id="character-setup">
+    <h2>🎭 Create Your Character</h2>
+
+    <label>Name:
+      <input type="text" id="input-name" placeholder="Your name" />
+    </label>
+
+    <label>City:
+      <input type="text" id="input-city" placeholder="Your city" />
+    </label>
+
+    <label>Did you go to college?</label>
+    <div class="button-group">
+      <button onclick="setCollege(true)">Yes 🎓</button>
+      <button onclick="setCollege(false)">No</button>
+    </div>
+
+    <div id="job-selection" style="display: none;">
+      <label>Select your job:</label>
+      <div class="button-group" id="job-options"></div>
+    </div>
+  </div>
+
+  <!-- Floating Achievements Button -->
+  <button id="achievements-floating-btn">🏆</button>
+
+  <!-- Game UI -->
+  <div id="game-ui">
+
+    <header>
+      <h1>💸 Surviving the Paycheck</h1>
+
+      <div class="stats">
+        <div><strong>Week:</strong> <span id="week-number">1</span></div>
+        <div><strong>Money:</strong> <span id="money">$300</span></div>
+        <div><strong>Stress:</strong> <span id="stress">60</span></div>
+        <div><strong>Mental:</strong> <span id="mental-health">50</span></div>
+        <div><strong>Physical:</strong> <span id="physical-health">50</span></div>
+        <div><strong>Social:</strong> <span id="social-capital">30</span></div>
+        <div><strong>Credit:</strong> <span id="credit-score">580</span></div>
+        <div><strong>Mood:</strong> <span id="mood-indicator">😞 Low</span></div>
+      </div>
+    </header>
+
+    <!-- Tab Buttons -->
+    <nav id="tabs">
+      <button id="life-tab-button">Life</button>
+      <button id="career-tab-button">Career</button>
+      <button id="health-tab-button">Health</button>
+      <button id="social-tab-button">Social</button>
+      <button id="save-tab-button">Save</button>
+      <button id="invest-tab-button">Invest</button>
+      <button id="bills-tab-button">Bills</button>
+      <button id="debt-tab-button">Debt</button>
+      <button id="gamble-tab-button">Gamble</button>
+      <button id="summary-tab-button" style="display: none;">Summary</button>
+    </nav>
+
+    <!-- Tab Content -->
+    <main>
+      <section id="life-tab" class="tab active"></section>
+      <section id="career-tab" class="tab"></section>
+      <section id="health-tab" class="tab"></section>
+      <section id="social-tab" class="tab"></section>
+      <section id="save-tab" class="tab"></section>
+      <section id="invest-tab" class="tab"></section>
+      <section id="bills-tab" class="tab"></section>
+      <section id="debt-tab" class="tab"></section>
+      <section id="gamble-tab" class="tab"></section>
+      <section id="summary-tab" class="tab"></section>
+
+      <!-- ✅ Achievements Tab (correctly placed) -->
+      <section id="achievements-tab" class="tab">
+        <h3>🏆 Achievements</h3>
+        <div id="achievements-list"></div>
+      </section>
+    </main>
+
+  </div>
+
+  <script src="new.js" defer></script>
+
+</body>
+</html>

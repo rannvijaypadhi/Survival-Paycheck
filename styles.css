@@ -1,0 +1,285 @@
+/* === RESET & BASE === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #000;
+  color: #f0f0f0;
+  overflow-x: hidden;
+  transition: background-image 1s ease-in-out;
+}
+
+/* === BACKGROUND === */
+#theme-background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  transition: background-image 1.5s ease-in-out;
+}
+
+/* === CHARACTER SETUP === */
+#character-setup {
+  max-width: 500px;
+  margin: 5vh auto;
+  background: rgba(10, 10, 10, 0.85);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  animation: fadeIn 1s ease;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+#character-setup h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #f5f5f5;
+}
+
+#character-setup label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+  font-weight: bold;
+  color: #ccc;
+}
+
+#character-setup input {
+  width: 80%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: none;
+  margin-bottom: 1rem;
+  background: #222;
+  color: #fff;
+}
+
+/* === GAME UI === */
+#game-ui {
+  display: none;
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  animation: fadeIn 1s ease;
+}
+
+/* === HEADER & STATS === */
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  animation: pulse 2.5s infinite;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* === TABS === */
+#tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#tabs button {
+  background: #1a1a1a;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#tabs button:hover {
+  background: #333;
+  transform: scale(1.05);
+}
+
+#tabs button:focus {
+  outline: 2px solid #888;
+}
+
+/* === TAB CONTENT === */
+.tab {
+  display: none;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 8px;
+  animation: fadeIn 0.5s ease;
+}
+
+.tab.active {
+  display: block;
+}
+
+/* === BUTTONS === */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.button-group button {
+  background: #3a3a3a;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.button-group button:hover {
+  background: #5a5a5a;
+  transform: scale(1.03);
+}
+
+/* === NOTIFICATION BANNER === */
+#notification-banner {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  left: auto;
+  transform: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: none;
+  padding: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.note-item {
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  pointer-events: auto;
+}
+
+#notification-banner.show {
+  opacity: 1;
+}
+#achievements-floating-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 2000;
+  backdrop-filter: blur(4px);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#achievements-floating-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+.ach-row {
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+}
+
+.ach-row.unlocked {
+  color: #8f8;
+}
+
+.ach-row.locked {
+  opacity: 0.4;
+}
+/* === GAME OVER === */
+.game-over {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 0, 0, 0.1);
+  border: 2px solid #f33;
+  border-radius: 12px;
+  animation: fadeIn 1s ease;
+}
+
+.game-over h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #f88;
+}
+
+.game-over button {
+  margin-top: 1rem;
+  background: #f33;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.game-over button:hover {
+  background: #c00;
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .stats {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    font-size: 0.85rem;
+  }
+
+  #tabs button {
+    flex: 1 1 45%;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+}
