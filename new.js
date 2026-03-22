@@ -36,6 +36,12 @@ let achievements = {
   highRoller: false
 };
 
+  let tooltipShown = {
+  stress: false,
+  mental: false,
+  money: false
+};
+
 // === THEMES ===
 const themeCycle = ["rain", "fog", "sunset"];
 const themes = {
@@ -319,7 +325,7 @@ function gamble(amount) {
   } else {
     stats.stress += 10;
     stats.mental -= 5;
-    showNotification("😢 You lost the gamble. -Money, +Stress, -Mental");
+    showNotification(" You lost the gamble. -Money, +Stress, -Mental");
   }
 
   updateStats();
@@ -330,7 +336,7 @@ function gamble(amount) {
 shuffledQuestions = shuffleQuestions(lifeQuestions);
 
 function applyLifeChoice(index) {
-  const q = lifeQuestions[questionCount];
+  const q = shuffledQuestions[questionCount];
   const choice = q.options[index];
   const effects = choice.effects || {};
 
@@ -375,7 +381,7 @@ function applyLifeChoice(index) {
     if (!player.promoted && stats.mental > 70 && stats.stress < 40) {
       player.promoted = true;
       player.dailyPay += 50;
-      showNotification(`🎉 Promotion! Your new role pays $${player.dailyPay}/day.`);
+      showNotification(` Promotion! Your new role pays $${player.dailyPay}/day.`);
     }
 
     maybeShowMonologue();
@@ -390,7 +396,7 @@ function applyLifeChoice(index) {
   // Unlock summary tab at end
   if (questionCount >= 21) {
     $("summary-tab-button").style.display = "inline-block";
-    showNotification("🏁 You've completed 3 weeks. Summary unlocked.");
+    showNotification(" You've completed 3 weeks. Summary unlocked.");
   }
 
   updstats();
@@ -423,7 +429,7 @@ function renderLifeTab() {
     return;
   }
 
-  const q = lifeQuestions[questionCount];
+  const q = shuffledQuestions[questionCount];
   $("life-tab").innerHTML = `
     <h3>🧠 Life Choice</h3>
     <p><strong>Week ${week}</strong> • Question ${questionCount + 1} of 21</p>
@@ -499,7 +505,7 @@ function renderSaveTab() {
 function renderInvestTab() {
   showTab("invest-tab");
   $("invest-tab").innerHTML = `
-    <h3>📈 Invest</h3>
+    <h3> Invest</h3>
     <p>Choose an investment:</p>
     <div class="button-group">
       <button onclick="invest('stocks')">Buy Stocks ($200)</button>
@@ -513,7 +519,7 @@ function renderInvestTab() {
 function renderBillsTab() {
   showTab("bills-tab");
   $("bills-tab").innerHTML = `
-    <h3>🧾 Bills</h3>
+    <h3> Bills</h3>
     <p><strong>Total Bills:</strong> $${stats.totalBills}</p>
     <p>Paying bills on time helps your credit score.</p>
     <div class="button-group">
@@ -526,7 +532,7 @@ function renderBillsTab() {
 function renderDebtTab() {
   showTab("debt-tab");
   $("debt-tab").innerHTML = `
-    <h3>💳 Debt</h3>
+    <h3> Debt</h3>
     <p><strong>Current Debt:</strong> $${stats.debt}</p>
     <p>Paying off debt improves your credit score.</p>
     <div class="button-group">
@@ -542,7 +548,7 @@ function renderDebtTab() {
 function renderGambleTab() {
   showTab("gamble-tab");
   $("gamble-tab").innerHTML = `
-    <h3>🎲 Gamble</h3>
+    <h3> Gamble</h3>
     <p>You visit a local casino. Feeling lucky?</p>
     <div class="button-group">
       <button onclick="gamble(50)">Bet $50</button>
@@ -582,6 +588,19 @@ function getArchetype() {
 
   return "The Wanderer";
 }
+function takeLoan(amount, interestRate) {
+  const interest = Math.floor(amount * interestRate);
+  const totalOwed = amount + interest;
+
+  stats.money += amount;
+  stats.debt += totalOwed;
+  stats.creditScore -= 10; // taking loans hurts credit slightly
+  stats.stress += 5;
+
+  showNotification(`You took a $${amount} loan. You owe $${totalOwed} total.`);
+  updstats();
+  renderLoanTab();
+}
 function renderAchievementsTab() {
   showTab("achievements-tab");
 
@@ -599,6 +618,46 @@ function renderAchievementsTab() {
   row("Lucky Ducky", achievements.luckyDucky);
   row("Social Butterfly", achievements.socialButterfly);
   row("High Roller", achievements.highRoller);
+
+}
+function renderLoanTab() {
+  showTab("loan-tab");
+
+  const cs = stats.creditScore;
+  let plans = [];
+
+  if (cs >= 700) {
+    plans = [
+      { amount: 500, rate: 0.10 },
+      { amount: 1000, rate: 0.10 },
+      { amount: 2000, rate: 0.10 }
+    ];
+  } else if (cs >= 600) {
+    plans = [
+      { amount: 300, rate: 0.20 },
+      { amount: 600, rate: 0.20 },
+      { amount: 1000, rate: 0.20 }
+    ];
+  } else {
+    plans = [
+      { amount: 100, rate: 0.35 },
+      { amount: 200, rate: 0.35 },
+      { amount: 300, rate: 0.35 }
+    ];
+  }
+
+  $("loan-tab").innerHTML = `
+    <h3>🏦 Loan Options</h3>
+    <p><strong>Your Credit Score:</strong> ${stats.creditScore}</p>
+    <p>Select a loan plan:</p>
+    <div class="button-group">
+      ${plans.map(p => `
+        <button onclick="takeLoan(${p.amount}, ${p.rate})">
+          Borrow $${p.amount} (Interest: ${p.rate * 100}%)
+        </button>
+      `).join("")}
+    </div>
+  `;
 }
 function renderSummaryTab() {
   showTab("summary-tab");
@@ -613,7 +672,7 @@ function renderSummaryTab() {
   const archetype = getArchetype();
 
   $("summary-tab").innerHTML = `
-    <h3>📊 Life Summary</h3>
+    <h3> Life Summary</h3>
     <p><strong>Money:</strong> $${stats.money}</p>
     <p><strong>Savings:</strong> $${stats.savings}</p>
     <p><strong>Debt:</strong> $${stats.debt}</p>
@@ -633,12 +692,40 @@ function renderSummaryTab() {
 }
 
 function updateStats() {
-  stats.stress = Math.max(0, Math.min(stats.stress, 100));
-  stats.mental = Math.max(0, Math.min(stats.mental, 100));
-  stats.physical = Math.max(0, Math.min(stats.physical, 100));
-  stats.social = Math.max(0, Math.min(stats.social, 100));
-  stats.creditScore = Math.max(300, Math.min(stats.creditScore, 9500));
+  stats.stress = Math.max(0, Math.min(stats.stress, 100));// stress stays between 0 and 100
+  stats.mental = Math.max(0, Math.min(stats.mental, 100));// mental health stays between 0 and 100
+  stats.physical = Math.max(0, Math.min(stats.physical, 100)); // health stats stay between 0 and 100
+  stats.social = Math.max(0, Math.min(stats.social, 100));//  credit score stays between 300 and 850
+  stats.creditScore = Math.max(300, Math.min(stats.creditScore, 850)); 
+  stats.money = Math.max(0, stats.money); // money can’t go negative
+  if (stats.money >= 2000 && !achievements.bigWallet) {
+    achievements.bigWallet = true;
+    showNotification("🏆 Achievement unlocked: Big Wallet");
+  }
+  if (stats.money <= 0) {
+    showNotification("💸 You ran out of money!");
+    checkGameOver
+  }{
   stats.mood = calculateMood();
+
+
+if (stats.stress >= 80 && !tooltipShown.stress) {
+  showTooltip("Your stress is high. The Health tab can help reduce it.");
+  tooltipShown.stress = true;
+}
+
+
+if (stats.mental <= 30 && !tooltipShown.mental) {
+  showTooltip("Your mental health is low. Meditation or rest can help.");
+  tooltipShown.mental = true;
+}
+
+
+if (stats.money <= 100 && !tooltipShown.money) {
+  showTooltip("You're low on money. Consider working overtime or taking a loan.");
+  tooltipShown.money = true;
+}
+
 
   $("money").textContent = `$${stats.money}`;
   $("stress").textContent = stats.stress;
@@ -656,7 +743,7 @@ function updateStats() {
 
   checkGameOver();
 }
-
+}
 function updstats() { updateStats(); }
 
 function checkGameOver() {
@@ -687,8 +774,22 @@ function showNotification(message) {
   setTimeout(() => {
     note.style.opacity = "0";
     setTimeout(() => note.remove(), 400);
-  }, 2500);
+  }, 3500);
+  
 }
+
+function showTooltip(message) {
+  const tip = $("tooltip-helper");
+  tip.textContent = message;
+  tip.style.display = "block";
+
+  setTimeout(() => {
+    tip.style.display = "none";
+  }, 4000);
+}
+
+
+
 
 function maybeShowMonologue() {
   const thoughts = [
@@ -769,7 +870,7 @@ function invest(type) {
   if (stats.money < cost) return showNotification("Not enough money to invest.");
 
   stats.money -= cost;
-  const win = Math.random() > 0.5;
+  const win = Math.random() > 0.3; // 70% chance to win on stocks, 50% on crypto
   if (win) {
     const gain = type === "stocks" ? 400 : 200;
     stats.money += gain;
@@ -845,6 +946,7 @@ function careerBoost() {
   updateStats();
 }
 
+
 function network() {
   stats.social += 10;
   stats.mental += 5;
@@ -863,6 +965,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("debt-tab-button").addEventListener("click", renderDebtTab);
   $("gamble-tab-button").addEventListener("click", renderGambleTab);
   $("summary-tab-button").addEventListener("click", renderSummaryTab);
+  $("loan-tab-button").addEventListener("click", renderLoanTab);
 });
 
 // Expose commonly-used functions to global scope for inline HTML handlers
