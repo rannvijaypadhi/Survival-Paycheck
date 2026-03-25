@@ -71,6 +71,35 @@ function switchTheme(themeName) {
     } catch (e) {}
   }
 }
+
+const weeklyGoals = {
+  1: [
+    { desc: "Stress below 80", check: () => stats.stress < 80 },
+    { desc: "Mental above 40", check: () => stats.mental > 40 },
+    { desc: "Physical above 40", check: () => stats.physical > 40 },
+    { desc: "Social above 20", check: () => stats.social > 20 },
+    { desc: "Money at least $200", check: () => stats.money >= 200 },
+    { desc: "Credit Score at least 550", check: () => stats.creditScore >= 550 }
+  ],
+  2: [
+    { desc: "Stress below 75", check: () => stats.stress < 75 },
+    { desc: "Mental above 45", check: () => stats.mental > 45 },
+    { desc: "Physical above 45", check: () => stats.physical > 45 },
+    { desc: "Social above 25", check: () => stats.social > 25 },
+    { desc: "Money at least $300", check: () => stats.money >= 300 },
+    { desc: "Savings at least $50", check: () => stats.savings >= 50 }
+  ],
+  3: [
+    { desc: "Stress below 70", check: () => stats.stress < 70 },
+    { desc: "Mental above 50", check: () => stats.mental > 50 },
+    { desc: "Physical above 50", check: () => stats.physical > 50 },
+    { desc: "Social above 30", check: () => stats.social > 30 },
+    { desc: "Money at least $400", check: () => stats.money >= 400 },
+    { desc: "Savings at least $100", check: () => stats.savings >= 100 },
+    { desc: "Debt below $1200", check: () => stats.debt <= 1200 }
+  ]
+};
+
 const lifeQuestions = [
   // 🔥 Pivotal 1: Housing Crisis
   {
@@ -331,8 +360,7 @@ function gamble(amount) {
   updateStats();
 }
 
-// Initialize shuffledQuestions
-// Initialize shuffledQuestions
+
 shuffledQuestions = shuffleQuestions(lifeQuestions);
 
 function applyLifeChoice(index) {
@@ -363,6 +391,27 @@ function applyLifeChoice(index) {
   // Weekly wrap-up every 7 questions
   if (questionCount % 7 === 0) {
     week++;
+
+    // Check weekly goals
+const goals = weeklyGoals[week - 1]; // check the week that just ended
+
+for (let g of goals) {
+  if (!g.check()) {
+    $("game-ui").innerHTML = `
+      <div class="game-over">
+        <h2>💀 You failed a weekly goal</h2>
+        <p>Failed Goal: ${g.desc}</p>
+        <button onclick="location.reload()">🔁 Try Again</button>
+      </div>
+    `;
+    $("ambient-audio").pause();
+    return;
+  }
+}
+
+// If all goals passed, show success
+showNotification(`🎉 All Week ${week - 1} goals completed!`);
+//
 
     // Paycheck
     const paycheck = player.dailyPay * 5;
@@ -945,6 +994,19 @@ function careerBoost() {
   }
   updateStats();
 }
+function renderGoalsTab() {
+  showTab("goals-tab");
+
+  const goals = weeklyGoals[week];
+
+  $("goals-tab").innerHTML = `
+    <h3>📅 Week ${week} Goals</h3>
+    <ul>
+      ${goals.map(g => `<li>${g.desc}</li>`).join("")}
+    </ul>
+  `;
+}
+
 
 
 function network() {
@@ -966,6 +1028,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("gamble-tab-button").addEventListener("click", renderGambleTab);
   $("summary-tab-button").addEventListener("click", renderSummaryTab);
   $("loan-tab-button").addEventListener("click", renderLoanTab);
+  $("goals-tab-button").addEventListener("click", renderGoalsTab);
 });
 
 // Expose commonly-used functions to global scope for inline HTML handlers
