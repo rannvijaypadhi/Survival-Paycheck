@@ -199,6 +199,41 @@ header h1 {
   transform: scale(1.1);
 }
 
+/* Shared style for all floating round buttons */
+#fullscreen-btn,
+#mute-btn {
+  position: fixed;
+  top: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 2000;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#fullscreen-btn:hover,
+#mute-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+
+/* Positioning */
+#fullscreen-btn {
+  left: 124px; /* after achievements (20px) + goals (72px) + spacing */
+}
+
+#mute-btn {
+  left: 176px; 
+}
 
 
 /* === NOTIFICATION BANNER === */

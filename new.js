@@ -1015,7 +1015,41 @@ function network() {
   showNotification("You made new connections.");
   updateStats();
 }
+const ambientAudio = document.getElementById("ambient-audio");
+const muteBtn = document.getElementById("mute-btn");
+const fullscreenBtn = document.getElementById("fullscreen-btn");
 
+muteBtn.addEventListener("click", () => {
+  if (ambientAudio.muted) {
+    ambientAudio.muted = false;
+    muteBtn.textContent = "🔊";
+  } else {
+    ambientAudio.muted = true;
+    muteBtn.textContent = "🔇";
+  }
+});
+
+
+fullscreenBtn.addEventListener("click", () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+    fullscreenBtn.textContent = "🡽"; // exit icon
+  } else {
+    document.exitFullscreen();
+    fullscreenBtn.textContent = "⛶"; // enter icon
+  }
+});
+
+
+fullscreenBtn.addEventListener("click", () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+    fullscreenBtn.textContent = "🡽"; // exit icon
+  } else {
+    document.exitFullscreen();
+    fullscreenBtn.textContent = "⛶"; // enter icon
+  }
+});
 document.addEventListener("DOMContentLoaded", () => {
   $("life-tab-button").addEventListener("click", renderLifeTab);
   $("career-tab-button").addEventListener("click", renderCareerTab);
