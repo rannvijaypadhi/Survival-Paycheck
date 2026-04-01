@@ -401,7 +401,7 @@ for (let g of goals) {
       <div class="game-over">
         <h2>💀 You failed a weekly goal</h2>
         <p>Failed Goal: ${g.desc}</p>
-        <button onclick="location.reload()">🔁 Try Again</button>
+        <button onclick="location.reload()">Try Again</button>
       </div>
     `;
     $("ambient-audio").pause();
@@ -471,7 +471,7 @@ function renderLifeTab() {
 
   if (questionCount >= 21) {
     $("life-tab").innerHTML = `
-      <h3>🏁 Three Weeks Complete</h3>
+      <h3>Three Weeks Complete</h3>
       <p>You’ve reached the end of your 3-week journey.</p>
       <p>Head to the <strong>Summary</strong> tab to see how your life turned out.</p>
     `;
@@ -480,7 +480,7 @@ function renderLifeTab() {
 
   const q = shuffledQuestions[questionCount];
   $("life-tab").innerHTML = `
-    <h3>🧠 Life Choice</h3>
+    <h3> Life Choice</h3>
     <p><strong>Week ${week}</strong> • Question ${questionCount + 1} of 21</p>
     <p>${q.prompt}</p>
     <div class="button-group">
@@ -493,7 +493,7 @@ function renderLifeTab() {
 function renderCareerTab() {
   showTab("career-tab");
   $("career-tab").innerHTML = `
-    <h3>💼 Career</h3>
+    <h3>Career</h3>
     <p><strong>Job:</strong> ${player.job}</p>
     <p><strong>Daily Pay:</strong> $${player.dailyPay}</p>
     <div class="button-group">
@@ -507,7 +507,7 @@ function renderCareerTab() {
 function renderHealthTab() {
   showTab("health-tab");
   $("health-tab").innerHTML = `
-    <h3>💪 Health</h3>
+    <h3>Health</h3>
     <p>Take care of your body and mind.</p>
     <div class="button-group">
       <button onclick="improveHealth('mental')">Meditate (+Mental, -$20)</button>
@@ -521,7 +521,7 @@ function renderHealthTab() {
 function renderSocialTab() {
   showTab("social-tab");
   $("social-tab").innerHTML = `
-    <h3>💛 Social</h3>
+    <h3>Social</h3>
     <p><strong>Social Capital:</strong> ${stats.social}</p>
     <div class="button-group">
       <button onclick="socialize('hangout')">Hang out (-$30, +Social)</button>
@@ -535,7 +535,7 @@ function renderSocialTab() {
 function renderSaveTab() {
   showTab("save-tab");
   $("save-tab").innerHTML = `
-    <h3>💾 Save & Withdraw</h3>
+    <h3>Save & Withdraw</h3>
     <div class="button-group">
       <button onclick="saveMoney(50)">Save $50</button>
       <button onclick="saveMoney(100)">Save $100</button>
