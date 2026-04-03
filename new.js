@@ -464,8 +464,20 @@ function showTab(tabId) {
   document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
   $(tabId).classList.add("active");
 }
-
+// Initial render
 // === LIFE TAB ===
+function setCollege(attended) {
+  const jobSelection = document.getElementById('job-selection');
+  if (attended) {
+    jobSelection.style.display = 'block';
+    let debt = 2000;
+    let pay = 100;
+  } else {
+    jobSelection.style.display = 'none';
+  }
+}
+
+
 function renderLifeTab() {
   showTab("life-tab");
 
@@ -537,9 +549,10 @@ function renderSaveTab() {
   $("save-tab").innerHTML = `
     <h3>Save & Withdraw</h3>
     <div class="button-group">
-      <button onclick="saveMoney(50)">Save $50</button>
+      <button onclick="saveMoney(50)">Save $50</button>                               //test change
       <button onclick="saveMoney(100)">Save $100</button>
       <button onclick="saveMoney(200)">Save $200</button>
+
     </div>
     <h4>Withdraw from Savings</h4>
     <div class="button-group">
