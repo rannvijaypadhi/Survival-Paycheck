@@ -15,14 +15,14 @@ let player = {
 };
 
 let stats = {
-  money: 300,
+  money: 30000,
   savings: 0,
-  debt: 1000,
-  creditScore: 580,
-  stress: 60,
-  mental: 50,
-  physical: 50,
-  social: 30,
+  debt: 0,
+  creditScore: 850,
+  stress: 0,
+  mental: 100,
+  physical: 100,
+  social: 100,
   totalBills: 0,
   mood: "😞 Low"
 };
